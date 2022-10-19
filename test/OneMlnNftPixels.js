@@ -110,7 +110,7 @@ describe('OneMilNftPixels', () => {
     it('should have no owner for pixel #0', async () => {
       await expectToBeReverted({
         tx: oneMilNftPixels.ownerOf(0),
-        reason: 'ERC721: owner query for nonexistent token',
+        reason: 'ERC721: invalid token ID',
       });
     });
 
@@ -495,7 +495,7 @@ describe('OneMilNftPixels', () => {
           }).then((txResponse) => txResponse.wait());
           await expectToBeReverted({
             tx,
-            reason: 'ERC721: owner query for nonexistent token',
+            reason: 'ERC721: invalid token ID',
           });
         });
 

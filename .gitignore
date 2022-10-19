@@ -1,0 +1,16 @@
+# dependencies
+/node_modules
+
+# misc
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# System Files
+.DS_Store
+Thumbs.db
+
+#hardhat
+artifacts/
+cache/
