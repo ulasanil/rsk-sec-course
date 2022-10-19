@@ -42,5 +42,7 @@ Following resources might help or inspire you while completing this task:
 * https://consensys.github.io/smart-contract-best-practices/attacks/
 * https://github.com/crytic/not-so-smart-contracts
 * https://github.com/sirhashalot/SCV-List
+* https://github.com/KadenZipfel/smart-contract-attack-vectors
+* https://swcregistry.io/
 
 
