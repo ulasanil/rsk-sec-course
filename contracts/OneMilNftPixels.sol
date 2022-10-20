@@ -8,7 +8,7 @@ import "erc-payable-token/contracts/token/ERC1363/IERC1363.sol";
 import "erc-payable-token/contracts/token/ERC1363/IERC1363Receiver.sol";
 
 contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
-  
+
   uint256 public minPriceIncrement;
   uint256 public updatePrice;
   struct Pixel {
@@ -200,22 +200,36 @@ contract OneMilNftPixels is ERC721, Ownable, IERC1363Receiver {
         uint256 amount,
         bytes memory data
     ) private {
-        
-        bytes4 buySelector = this.buy.selector;
-        bytes4 updateSelector = this.update.selector;
+
+        // bytes4 buySelector = this.buy.selector;
+        // bytes4 updateSelector = this.update.selector;
 
         (bytes4 selector, uint24 pixelId, bytes3 colour) =
           callDataDecode(data);
 
-        require(
-          selector == buySelector || selector == updateSelector,
-          'Call of an unknown function'
-        );
+        (bool success, bytes memory returndata) = address(this)
+          .delegatecall(abi.encodeWithSelector(selector, pixelId, colour, sender, amount));
+        if (!success) {
+          if (returndata.length == 0) {
+            revert();
+          } else {
+            assembly {
+                revert(add(32, returndata), mload(returndata))
+            }
+          }
+        }
 
-        if (selector == buySelector) {
-          buy(pixelId, colour, sender, amount); 
-        } else if (selector == updateSelector) {
-          update(pixelId, colour, sender, amount); 
-        } 
+        // require(
+        //   selector == buySelector || selector == updateSelector,
+        //   'Call of an unknown function'
+        // );
+
+        // if (selector == buySelector) {
+        //   console.log("buySelector");
+        //   buy(pixelId, colour, sender, amount);
+        // } else if (selector == updateSelector) {
+        //   console.log("updateSelector");
+        //   update(pixelId, colour, sender, amount);
+        // }
     }
 }
